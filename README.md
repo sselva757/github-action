@@ -1,4 +1,8 @@
+Requirements:
+az -upgrade
+
 I have used HCP Terraform (Terraform Cloud service) in order to have secure access to my secret keys of my Azure Backend. 
+https://developer.hashicorp.com/terraform/language/backend/remote
 1. Terraform login
 2. cd tfc-getting-started
 3. scripts/setup.sh
