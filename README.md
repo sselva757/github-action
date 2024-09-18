@@ -1,3 +1,12 @@
+I have used HCP Terraform in order to have secure access to my secret keys of my Azure Backend. 
+1. cd tfc-getting-started
+2. scripts/setup.sh
+
+In my case, I'm going to use a variable set to use this credentials across multiple proyects.
+
+If you don't want to use this, you can use other alternatives like variables or backend.tf
+
+
 # Github Actions course
 
 DevOps became very imprtant for organiztions willing to automate and modernaze their workloads. Thanks to its capabilities, it is never been easier create a pipelin that can do all the required staps to build 'almost' any kind of application and deploy 'almost' to any environment. All of this with a click of a button.
