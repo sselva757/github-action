@@ -10,10 +10,10 @@ on:
   workflow_dispatch:
   
 env:
-  STORAGE_ACCOUNT_NAME: storagetfstate013
-  RESOURCE_GROUP_NAME: rg-terraform-state
-  CONTAINER_NAME: tfstate
-  BLOB_NAME: terraform.tfstate
+  STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
+  RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
+  CONTAINER_NAME: ${{ secrets.BACKEND_CONTAINER_NAME }}
+  KEY: ${{ secrets.BACKEND_KEY }}
   
   WORKING_DIRECTORY: 05_Web_Sql_database
   
@@ -93,7 +93,7 @@ jobs:
               resource_group_name   = "$RESOURCE_GROUP_NAME"
               storage_account_name  = "$STORAGE_ACCOUNT_NAME"
               container_name        = "$CONTAINER_NAME"
-              key                   = "$BLOB_NAME"
+              key                   = "$KEY"
             }
           }
           EOT
