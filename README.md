@@ -1,8 +1,9 @@
-I have used HCP Terraform in order to have secure access to my secret keys of my Azure Backend. 
-1. cd tfc-getting-started
-2. scripts/setup.sh
+I have used HCP Terraform (Terraform Cloud service) in order to have secure access to my secret keys of my Azure Backend. 
+1. Terraform login
+2. cd tfc-getting-started
+3. scripts/setup.sh
 
-In my case, I'm going to use a variable set to use this credentials across multiple proyects.
+In my case, I'm going to use a variable set to use this credentials across multiple proyects. You can create it in your workspace settings.
 
 If you don't want to use this, you can use other alternatives like variables or backend.tf
 
