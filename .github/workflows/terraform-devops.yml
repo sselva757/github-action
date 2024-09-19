@@ -10,10 +10,13 @@ on:
   workflow_dispatch:
   
 env:
+  # All of this are backend settings
   STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
   RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
   CONTAINER_NAME: ${{ secrets.BACKEND_CONTAINER_NAME }}
   KEY: ${{ secrets.BACKEND_KEY }}
+  BACKEND_ORGANIZATION: ${{ secrets.BACKEND_ORGANIZATION }}
+  BACKEND_WORKSPACES: ${{ secrets.BACKEND_WORKSPACES }}
   
   WORKING_DIRECTORY: 05_Web_Sql_database
   
@@ -60,13 +63,13 @@ jobs:
       uses: actions/checkout@v2
                 
     - name: Login to Azure with Service Principal
-      uses: Azure/login@v1.4.3
+      uses: Azure/login@v2.1.1
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Create Terraform backend state storage
-      uses: Azure/cli@v1.0.6
+      uses: Azure/cli@v2.0.0
       with:
         # Azure CLI version to be used to execute the script. If not provided, latest version is used
         # azcliversion: 2.34.1 # optional, default is agentazcliversion
@@ -89,11 +92,21 @@ jobs:
           cd $WORKING_DIRECTORY
           cat <<EOT > backend.tf
           terraform {
+            /*  NORMAL AZURE BACKEND HARDCODED
             backend "azurerm" {
               resource_group_name   = "$RESOURCE_GROUP_NAME"
               storage_account_name  = "$STORAGE_ACCOUNT_NAME"
               container_name        = "$CONTAINER_NAME"
               key                   = "$KEY"
+            }
+          } */
+          
+          # Terraform Cloud Backend
+          cloud {
+            organization = "$BACKEND_ORGANIZATION"
+
+            workspaces {
+              name = "$BACKEND_WORKSPACES"
             }
           }
           EOT
@@ -104,7 +117,7 @@ jobs:
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v1
       with:
-        terraform_version: 1.1.7
+        terraform_version: 3.1.0
     
     - name: Terraform Init
       id: init
@@ -153,7 +166,7 @@ jobs:
 
     - name: Add Terraform Plan Comment
       id: comment
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7.0.0
       if: github.event_name == 'pull_request' # 'push'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
