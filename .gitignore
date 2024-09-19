@@ -1,6 +1,5 @@
-# Terraform personal data
-*/backend.tf
-*/terraform.tfvars
+# Terraform Provider Configuration Files (In this case, it's not necessary)
+#*/terraform.tfvars
 
 # Local .terraform directories
 **/.terraform/*
@@ -12,6 +11,15 @@
 # tfplan files
 *tfplan
 *tfplan.json
+
+# Backend files (It's not necessary in this case because I use Terraform Cloud)
+# *backend.tf
+# *backend.tfvars
+
+# Private Keys or Sensitive Files
+*.pem
+*.key
+*.p12
 
 # Crash log files
 crash.log
