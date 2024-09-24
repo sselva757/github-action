@@ -85,7 +85,7 @@ jobs:
           az version
 
           # Create resource group
-          $exist = az group exists --name $RESOURCE_GROUP_NAME
+          $exist = az group exists --name $RESOURCE_GROUP_NAME --query "result" -o tsv
           if(!$exist) {
               az group create --name $RESOURCE_GROUP_NAME --location westeurope
           } else {
