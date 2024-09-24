@@ -79,16 +79,17 @@ jobs:
     - name: Create Terraform backend state storage
       uses: Azure/cli@v2.0.0
       with:
-        STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
-        RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
-        CONTAINER_NAME: ${{ secrets.BACKEND_CONTAINER_NAME }}
-        KEY: ${{ secrets.BACKEND_KEY }}
-        BACKEND_ORGANIZATION: ${{ secrets.BACKEND_ORGANIZATION }}
-        BACKEND_WORKSPACES: ${{ secrets.BACKEND_WORKSPACES }}
         # Azure CLI version to be used to execute the script. If not provided, latest version is used
         # azcliversion: 2.34.1 # optional, default is agentazcliversion
         inlineScript: |
           az version
+
+          $STORAGE_ACCOUNT_NAME: ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
+          $RESOURCE_GROUP_NAME: ${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}
+          $CONTAINER_NAME: ${{ secrets.BACKEND_CONTAINER_NAME }}
+          $KEY: ${{ secrets.BACKEND_KEY }}
+          $BACKEND_ORGANIZATION: ${{ secrets.BACKEND_ORGANIZATION }}
+          $BACKEND_WORKSPACES: ${{ secrets.BACKEND_WORKSPACES }}
 
           # Create resource group
           az group --help
