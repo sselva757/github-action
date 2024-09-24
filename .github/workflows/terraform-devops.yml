@@ -110,8 +110,8 @@ jobs:
           env
           echo ''
           az group exists --name $BACKEND_RESOURCE_GROUP_NAME
-          exist = az group exists --name $BACKEND_RESOURCE_GROUP_NAME
-          echo 'Existe?: $exist'
+          exist=$(az group exists --name $BACKEND_RESOURCE_GROUP_NAME)
+          echo 'Existe: $exist'
           if(-not $exist) {
             az group create --name $BACKEND_RESOURCE_GROUP_NAME --location westeurope
           } else {
