@@ -120,24 +120,24 @@ jobs:
           
 
           # Create storage account
-          $exist = az storage account exists --name $BACKEND_STORAGE_ACCOUNT_NAME
-          if(!$exist) {
+          exist=$(az storage account exists --name $BACKEND_STORAGE_ACCOUNT_NAME)
+          if [ "$exist"="false" ]; then
             az storage account create --name $BACKEND_STORAGE_ACCOUNT_NAME \
               --resource-group $BACKEND_RESOURCE_GROUP_NAME \
               --sku Standard_LRS \
               --encryption-services blob
-          } else {
+          else 
             az storage account show --name $BACKEND_STORAGE_ACCOUNT_NAME
-          }
+          fi
           
           
           # Create blob container
-          $exist = az storage container exists --name $BACKEND_RESOURCE_GROUP_NAME
-          if(!$exist) {
+          $exist=$(az storage container exists --name $BACKEND_RESOURCE_GROUP_NAME)
+          if [ "$exist"="false" ]; then 
             az storage container create --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
-          } else {
+          else 
             az storage container show --name $BACKEND_RESOURCE_GROUP_NAME
-          }
+          fi
           
           # generate backend.tf file
           # cd $WORKING_DIRECTORY
