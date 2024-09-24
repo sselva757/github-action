@@ -110,10 +110,10 @@ jobs:
           env
           echo ''
           echo "PRUEBA VARIABLE: $VARIABLE_PRUEBA"
-          $VARIABLE_PRUEBA
+          $env:VARIABLE_PRUEBA
           echo ''
           
-          echo "If you have environment variables set up, using:"
+          echo "If you have environment variables set up, using: $env:BACKEND_STORAGE_ACCOUNT_NAME"
           echo "$env:BACKEND_STORAGE_ACCOUNT_NAME"
           $BACKEND_STORAGE_ACCOUNT_NAME
 
