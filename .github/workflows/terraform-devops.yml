@@ -111,12 +111,12 @@ jobs:
           echo ''
           az group exists --name $BACKEND_RESOURCE_GROUP_NAME
           exist=$(az group exists --name $BACKEND_RESOURCE_GROUP_NAME)
-          echo 'Existe: $exist'
-          if(-not $exist) {
+          echo "Existe: $exist"
+          if [ "$exist"="false" ]; then
             az group create --name $BACKEND_RESOURCE_GROUP_NAME --location westeurope
-          } else {
+          else 
             az group show --name $BACKEND_RESOURCE_GROUP_NAME
-          }
+          fi
           
 
           # Create storage account
