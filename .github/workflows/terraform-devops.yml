@@ -86,7 +86,10 @@ jobs:
 
           # Create resource group
           az group --help
-          $exist = az group exists --name $RESOURCE_GROUP_NAME --query "result" -o tsv
+          echo 'Variable Resource Group Name'
+          $RESOURCE_GROUP_NAME
+          az group exists --name $RESOURCE_GROUP_NAME
+          $exist = az group exists --name $RESOURCE_GROUP_NAME
           if(!$exist) {
               az group create --name $RESOURCE_GROUP_NAME --location westeurope
           } else {
