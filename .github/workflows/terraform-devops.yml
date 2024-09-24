@@ -121,19 +121,19 @@ jobs:
           echo 'Storage account'
           # Create storage account
           # VOY POR AQUÍ
-          exist=$(az storage account show --name $BACKEND_STORAGE_ACCOUNT_NAME)
+          exist=$(az storage account show --name $BACKEND_STORAGE_ACCOUNT_NAME --resource-group $BACKEND_RESOURCE_GROUP_NAME)
           if [ -z "$exist" ]; then
             az storage account create --name $BACKEND_STORAGE_ACCOUNT_NAME \
               --resource-group $BACKEND_RESOURCE_GROUP_NAME \
               --sku Standard_LRS \
               --encryption-services blob
           else 
-            az storage account show --name $BACKEND_STORAGE_ACCOUNT_NAME
+            az storage account show --name $BACKEND_STORAGE_ACCOUNT_NAME --resource-group $BACKEND_RESOURCE_GROUP_NAME
           fi
           
           echo 'Blob container'
           # Create blob container
-          $exist=$(az storage container exists --name $BACKEND_RESOURCE_GROUP_NAME)
+          $exist=$(az storage container exists --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME)
           if [ "$exist"="false" ]; then 
             az storage container create --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
           else 
