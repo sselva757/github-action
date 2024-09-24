@@ -86,7 +86,8 @@ jobs:
           az version
           echo "If you have environment variables set up, using:"
           echo "$env:BACKEND_STORAGE_ACCOUNT_NAME"
-          echo "Storage Account Name: "
+          $Prueba = 'Hola'
+          echo "Prueba = $Prueba"
           echo "If you have environment variables set up, using $env:BACKEND_STORAGE_ACCOUNT_NAME"
           echo "${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}"
           $Prueba = echo "${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}"
