@@ -23,7 +23,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   # IMAGE_NAME: houssemdellai/github-actions-course 
-  IMAGE_NAME: ${{ github.repository }} # returns HoussemDellai/github-actions-course : problem with uppercase
+  # IMAGE_NAME: $ # {{ toLower(github.repository) }} # returns HoussemDellai/github-actions-course : problem with uppercase
   IMAGE_TAG: 1.0.${{ github.run_number }} # GITHUB_RUN_NUMBER }}
 
 
@@ -41,6 +41,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+    
+      - name: Set IMAGE_NAME environment variable
+        run: |
+          run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
