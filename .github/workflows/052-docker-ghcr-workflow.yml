@@ -44,7 +44,7 @@ jobs:
     
       - name: Set IMAGE_NAME environment variable
         run: |
-          run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
 
       # Install the cosign tool except on PR
