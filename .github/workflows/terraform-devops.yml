@@ -93,6 +93,7 @@ jobs:
         KEY: ${{ secrets.BACKEND_KEY }}
         BACKEND_ORGANIZATION: ${{ secrets.BACKEND_ORGANIZATION }}
         BACKEND_WORKSPACES: ${{ secrets.BACKEND_WORKSPACES }}
+        VARIABLE_PRUEBA: 'ESTO ES UNA PRUEBA'
       
       with:
         # Azure CLI version to be used to execute the script. If not provided, latest version is used
@@ -102,11 +103,16 @@ jobs:
         # Ejecutado en BASH
         inlineScript: |
           az version
-
+          echo 'printenv'
           printenv
           echo ''
-
-
+          echo 'env'
+          env
+          echo ''
+          echo "PRUEBA VARIABLE: $VARIABLE_PRUEBA"
+          $VARIABLE_PRUEBA
+          echo ''
+          
           echo "If you have environment variables set up, using:"
           echo "$env:BACKEND_STORAGE_ACCOUNT_NAME"
           $BACKEND_STORAGE_ACCOUNT_NAME
