@@ -137,7 +137,7 @@ jobs:
           if [ "$exist"="false" ]; then 
             az storage container create --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
           else 
-            az storage container show --name $BACKEND_RESOURCE_GROUP_NAME
+            az storage container show --name $BACKEND_CONTAINER_NAME
           fi
           
           # generate backend.tf file
