@@ -1,0 +1,93 @@
+    - name: Create Terraform backend state storage
+      uses: Azure/cli@v2
+      with:
+        # Azure CLI version to be used to execute the script. If not provided, latest version is used
+        # azcliversion: 2.34.1 # optional, default is agentazcliversion
+        STORAGE_ACCOUNT_NAME : ${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}
+        # #!/usr/bin/env pwsh
+        inlineScript: |
+          
+
+          az version
+          echo "If you have environment variables set up, using:"
+          echo "$env:BACKEND_STORAGE_ACCOUNT_NAME"
+          $Prueba = 'Hola'
+          echo "Prueba = $Prueba"
+          echo "If you have environment variables set up, using $env:BACKEND_STORAGE_ACCOUNT_NAME"
+          echo "${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}"
+          $Prueba = echo "${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}"
+          echo 'Prueba'
+          $Prueba
+          echo 'Fin prueba'
+
+
+          $STORAGE_ACCOUNT_NAME = "${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}"
+          $RESOURCE_GROUP_NAME = "${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}"
+          $CONTAINER_NAME = "${{ secrets.BACKEND_CONTAINER_NAME }}"
+          $KEY = "${{ secrets.BACKEND_KEY }}"
+          $BACKEND_ORGANIZATION = "${{ secrets.BACKEND_ORGANIZATION }}"
+          $BACKEND_WORKSPACES = "${{ secrets.BACKEND_WORKSPACES }}"
+
+          # Create resource group
+          az group --help
+          echo 'Variable Resource Group Name'
+          $RESOURCE_GROUP_NAME
+          az group exists --name $RESOURCE_GROUP_NAME
+          $exist = az group exists --name $RESOURCE_GROUP_NAME
+          if(!$exist) {
+              az group create --name $RESOURCE_GROUP_NAME --location westeurope
+          } else {
+            az group show --name $RESOURCE_GROUP_NAME
+          }
+          
+
+          # Create storage account
+          $exist = az storage account exists --name $STORAGE_ACCOUNT_NAME
+          if(!$exist) {
+            az storage account create --name $STORAGE_ACCOUNT_NAME \
+              --resource-group $RESOURCE_GROUP_NAME \
+              --sku Standard_LRS \
+              --encryption-services blob
+          } else {
+            az storage account show --name $STORAGE_ACCOUNT_NAME
+          }
+          
+          
+          # Create blob container
+          $exist = az storage container exists --name $RESOURCE_GROUP_NAME
+          if(!$exist) {
+              az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
+          } else {
+            az storage container show --name $RESOURCE_GROUP_NAME
+          }
+          
+          # generate backend.tf file
+          # cd $WORKING_DIRECTORY
+          if [ ! -f /$WORKING_DIRECTORY/backend.tf ]; then
+            echo "backend.tf not found!"
+          
+
+            cat <<EOT > backend.tf
+            terraform {
+              /*  NORMAL AZURE BACKEND HARDCODED
+              backend "azurerm" {
+                resource_group_name   = "$RESOURCE_GROUP_NAME"
+                storage_account_name  = "$STORAGE_ACCOUNT_NAME"
+                container_name        = "$CONTAINER_NAME"
+                key                   = "$KEY"
+              }
+            } */
+            
+            # Terraform Cloud Backend
+            cloud {
+              organization = "$BACKEND_ORGANIZATION"
+
+              workspaces {
+                name = "$BACKEND_WORKSPACES"
+              }
+            }
+            EOT
+            
+            cat backend.tf
+          
+          fi
