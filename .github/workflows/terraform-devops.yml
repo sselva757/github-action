@@ -109,21 +109,11 @@ jobs:
           echo 'env'
           env
           echo ''
-          echo "PRUEBA VARIABLE: $VARIABLE_PRUEBA"
           
-          echo ''
-          
-          echo "If you have environment variables set up, using: $BACKEND_STORAGE_ACCOUNT_NAME"
-          echo "$BACKEND_STORAGE_ACCOUNT_NAME"
-
-          # Create resource group
-          az group --help
-          echo 'Variable Resource Group Name: $BACKEND_RESOURCE_GROUP_NAME'
-          
-          az group exists --name $BACKEND_RESOURCE_GROUP_NAME
           $exist = az group exists --name $BACKEND_RESOURCE_GROUP_NAME
-          if(!$exist) {
-              az group create --name $BACKEND_RESOURCE_GROUP_NAME --location westeurope
+          echo 'Existe?: $exist'
+          if(-not $exist) {
+            az group create --name $BACKEND_RESOURCE_GROUP_NAME --location westeurope
           } else {
             az group show --name $BACKEND_RESOURCE_GROUP_NAME
           }
@@ -144,7 +134,7 @@ jobs:
           # Create blob container
           $exist = az storage container exists --name $BACKEND_RESOURCE_GROUP_NAME
           if(!$exist) {
-              az storage container create --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
+            az storage container create --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
           } else {
             az storage container show --name $BACKEND_RESOURCE_GROUP_NAME
           }
