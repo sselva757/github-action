@@ -66,6 +66,7 @@ jobs:
       uses: Azure/login@v2.1.1
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        # az role assignment create --assignee <service-principal-id> --role Contributor --scope /subscriptions/<subscription-id>
         # creds: ${#{ secrets.AZURE_CREDENTIALS }}
         auth-type: SERVICE_PRINCIPAL
         creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
@@ -84,41 +85,64 @@ jobs:
           az version
 
           # Create resource group
-          az group create --name $RESOURCE_GROUP_NAME --location westeurope
+          $exist = az group exists --name $RESOURCE_GROUP_NAME
+          if(!$exist) {
+              az group create --name $RESOURCE_GROUP_NAME --location westeurope
+          } else {
+            az group show --name $RESOURCE_GROUP_NAME
+          }
           
+
           # Create storage account
-          az storage account create --name $STORAGE_ACCOUNT_NAME \
-             --resource-group $RESOURCE_GROUP_NAME \
-             --sku Standard_LRS \
-             --encryption-services blob
+          $exist = az storage account exists --name $STORAGE_ACCOUNT_NAME
+          if(!$exist) {
+            az storage account create --name $STORAGE_ACCOUNT_NAME \
+              --resource-group $RESOURCE_GROUP_NAME \
+              --sku Standard_LRS \
+              --encryption-services blob
+          } else {
+            az storage account show --name $STORAGE_ACCOUNT_NAME
+          }
+          
           
           # Create blob container
-          az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
+          $exist = az storage container exists --name $RESOURCE_GROUP_NAME
+          if(!$exist) {
+              az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
+          } else {
+            az storage container show --name $RESOURCE_GROUP_NAME
+          }
           
           # generate backend.tf file
-          cd $WORKING_DIRECTORY
-          cat <<EOT > backend.tf
-          terraform {
-            /*  NORMAL AZURE BACKEND HARDCODED
-            backend "azurerm" {
-              resource_group_name   = "$RESOURCE_GROUP_NAME"
-              storage_account_name  = "$STORAGE_ACCOUNT_NAME"
-              container_name        = "$CONTAINER_NAME"
-              key                   = "$KEY"
-            }
-          } */
+          # cd $WORKING_DIRECTORY
+          if [ ! -f /$WORKING_DIRECTORY/backend.tf ]; then
+            echo "backend.tf not found!"
           
-          # Terraform Cloud Backend
-          cloud {
-            organization = "$BACKEND_ORGANIZATION"
 
-            workspaces {
-              name = "$BACKEND_WORKSPACES"
+            cat <<EOT > backend.tf
+            terraform {
+              /*  NORMAL AZURE BACKEND HARDCODED
+              backend "azurerm" {
+                resource_group_name   = "$RESOURCE_GROUP_NAME"
+                storage_account_name  = "$STORAGE_ACCOUNT_NAME"
+                container_name        = "$CONTAINER_NAME"
+                key                   = "$KEY"
+              }
+            } */
+            
+            # Terraform Cloud Backend
+            cloud {
+              organization = "$BACKEND_ORGANIZATION"
+
+              workspaces {
+                name = "$BACKEND_WORKSPACES"
+              }
             }
-          }
-          EOT
+            EOT
+            
+            cat backend.tf
           
-          cat backend.tf
+          fi
 
     # Install the latest version of Terraform CLI
     - name: Install Terraform
