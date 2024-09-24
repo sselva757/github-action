@@ -115,12 +115,11 @@ jobs:
           
           echo "If you have environment variables set up, using: $BACKEND_STORAGE_ACCOUNT_NAME"
           echo "$BACKEND_STORAGE_ACCOUNT_NAME"
-          $BACKEND_STORAGE_ACCOUNT_NAME
 
           # Create resource group
           az group --help
-          echo 'Variable Resource Group Name'
-          $BACKEND_RESOURCE_GROUP_NAME
+          echo 'Variable Resource Group Name: $BACKEND_RESOURCE_GROUP_NAME'
+          
           az group exists --name $BACKEND_RESOURCE_GROUP_NAME
           $exist = az group exists --name $BACKEND_RESOURCE_GROUP_NAME
           if(!$exist) {
