@@ -133,7 +133,7 @@ jobs:
           
           echo 'Blob container'
           # Create blob container
-          $exist=$(az storage container exists --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME)
+          $exist=$(az storage container exists --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME --account-key $BACKEND_KEY)
           if [ "$exist"="false" ]; then 
             az storage container create --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
           else 
