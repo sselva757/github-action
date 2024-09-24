@@ -66,7 +66,9 @@ jobs:
       uses: Azure/login@v2.1.1
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        # creds: ${#{ secrets.AZURE_CREDENTIALS }}
+        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
 
     - name: Create Terraform backend state storage
       uses: Azure/cli@v2.0.0
