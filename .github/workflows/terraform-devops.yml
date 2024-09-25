@@ -135,6 +135,8 @@ jobs:
           
 
           echo 'Create Blob container'
+          az storage container --help
+          az storage container exists --help
           $exist=$(az storage container exists --account-name $BACKEND_STORAGE_ACCOUNT_NAME --name $BACKEND_CONTAINER_NAME)
           echo "Existe: $exist"
           if [ "$exist"="false" ]; then 
