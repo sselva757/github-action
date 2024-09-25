@@ -120,7 +120,7 @@ jobs:
             az group show --name $BACKEND_RESOURCE_GROUP_NAME
           fi
           
-
+          
           echo 'Create storage account'
           exist=$(az storage account show --name $BACKEND_STORAGE_ACCOUNT_NAME --resource-group $BACKEND_RESOURCE_GROUP_NAME)
           echo "Existe: $exist"
@@ -149,21 +149,20 @@ jobs:
           
           # generate backend.tf file
           # cd $WORKING_DIRECTORY
-          if [ ! -f /$WORKING_DIRECTORY/backend.tf ]; then
+          if [ ! -f ./backend.tf ]; then
             echo "backend.tf not found!"
           
 
             cat <<EOT > backend.tf
-            terraform {
-              /*  NORMAL AZURE BACKEND HARDCODED
-              backend "azurerm" {
-                resource_group_name   = "$BACKEND_RESOURCE_GROUP_NAME"
-                storage_account_name  = "$BACKEND_STORAGE_ACCOUNT_NAME"
-                container_name        = "$BACKEND_CONTAINER_NAME"
-                key                   = "$BACKEND_KEY"
-              }
+          terraform {
+            # NORMAL AZURE BACKEND HARDCODED
+            /* backend "azurerm" {
+              resource_group_name   = "$BACKEND_RESOURCE_GROUP_NAME"
+              storage_account_name  = "$BACKEND_STORAGE_ACCOUNT_NAME"
+              container_name        = "$BACKEND_CONTAINER_NAME"
+              key                   = "$BACKEND_KEY"
             } */
-            
+
             # Terraform Cloud Backend
             cloud {
               organization = "$BACKEND_ORGANIZATION"
@@ -172,7 +171,8 @@ jobs:
                 name = "$BACKEND_WORKSPACES"
               }
             }
-            EOT
+          }
+          EOT
             
             cat backend.tf
           
