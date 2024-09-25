@@ -139,10 +139,10 @@ jobs:
           echo 'Prueba: az storage container exists'
           az storage container show --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
           echo 'Prueba conseguir key'
-          az storage account keys list --resource-group "tf_state" --account-name "tfstateudemy01" --query '[0].value' -o tsv
+          access_key = $(az storage account keys list --resource-group "tf_state" --account-name "tfstateudemy01" --query '[0].value' -o tsv)
           echo 'Prueba: az storage container exists'
           az storage container exists
-          $exist=$(az storage container exists --account-name $BACKEND_STORAGE_ACCOUNT_NAME --name $BACKEND_CONTAINER_NAME --auth-mode login)
+          $exist=$(az storage container exists --account-name $BACKEND_STORAGE_ACCOUNT_NAME --name $BACKEND_CONTAINER_NAME --account-key $access_key)
           echo "Existe: $exist"
           if [ "$exist"="false" ]; then 
             az storage container create \
