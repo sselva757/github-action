@@ -135,8 +135,14 @@ jobs:
           
 
           echo 'Create Blob container'
-          az storage container --help
           az storage container exists --help
+          echo 'Prueba: az storage container exists'
+          az storage container show --name $BACKEND_CONTAINER_NAME --resource-group $BACKEND_RESOURCE_GROUP_NAME
+          az storage container show
+          echo 'Prueba conseguir key'
+          az storage account keys list --resource-group "tf_state" --account-name "tfstateudemy01"--query '[0].value' -o tsv
+          echo 'Prueba: az storage container exists'
+          az storage container exists
           $exist=$(az storage container exists --account-name $BACKEND_STORAGE_ACCOUNT_NAME --name $BACKEND_CONTAINER_NAME --auth-mode login)
           echo "Existe: $exist"
           if [ "$exist"="false" ]; then 
