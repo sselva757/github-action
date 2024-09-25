@@ -133,14 +133,21 @@ jobs:
             az storage account show --name $BACKEND_STORAGE_ACCOUNT_NAME --resource-group $BACKEND_RESOURCE_GROUP_NAME
           fi
           
-          
+
           echo 'Create Blob container'
-          $exist=$(az storage container exists --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME --account-key $BACKEND_KEY)
+          $exist=$(az storage container exists --account-name $BACKEND_STORAGE_ACCOUNT_NAME --name $BACKEND_CONTAINER_NAME)
           echo "Existe: $exist"
           if [ "$exist"="false" ]; then 
-            az storage container create --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
+            az storage container create \
+              --resource-group $BACKEND_RESOURCE_GROUP_NAME \
+              --account-name $BACKEND_STORAGE_ACCOUNT_NAME \
+              --name $BACKEND_CONTAINER_NAME \
+              --account-key $BACKEND_KEY
           else 
-            az storage container show --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
+            az storage container show \
+              --resource-group $BACKEND_RESOURCE_GROUP_NAME \
+              --account-name $BACKEND_STORAGE_ACCOUNT_NAME \
+              --name $BACKEND_CONTAINER_NAME 
           fi
           
           # generate backend.tf file
