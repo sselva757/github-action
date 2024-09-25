@@ -137,14 +137,13 @@ jobs:
           echo 'Create Blob container'
           az storage container --help
           az storage container exists --help
-          $exist=$(az storage container exists --account-name $BACKEND_STORAGE_ACCOUNT_NAME --name $BACKEND_CONTAINER_NAME)
+          $exist=$(az storage container exists --account-name $BACKEND_STORAGE_ACCOUNT_NAME --name $BACKEND_CONTAINER_NAME --auth-mode login)
           echo "Existe: $exist"
           if [ "$exist"="false" ]; then 
             az storage container create \
               --resource-group $BACKEND_RESOURCE_GROUP_NAME \
               --account-name $BACKEND_STORAGE_ACCOUNT_NAME \
-              --name $BACKEND_CONTAINER_NAME \
-              --account-key $BACKEND_KEY
+              --name $BACKEND_CONTAINER_NAME 
           else 
             az storage container show \
               --resource-group $BACKEND_RESOURCE_GROUP_NAME \
