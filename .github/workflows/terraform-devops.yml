@@ -109,7 +109,9 @@ jobs:
           echo 'env'
           env
           echo ''
-          az group exists --name $BACKEND_RESOURCE_GROUP_NAME
+
+
+          echo 'Create Resource Group'
           exist=$(az group exists --name $BACKEND_RESOURCE_GROUP_NAME)
           echo "Existe: $exist"
           if [ "$exist"="false" ]; then
@@ -118,10 +120,10 @@ jobs:
             az group show --name $BACKEND_RESOURCE_GROUP_NAME
           fi
           
-          echo 'Storage account'
-          # Create storage account
-          # VOY POR AQUÍ
+
+          echo 'Create storage account'
           exist=$(az storage account show --name $BACKEND_STORAGE_ACCOUNT_NAME --resource-group $BACKEND_RESOURCE_GROUP_NAME)
+          echo "Existe: $exist"
           if [ -z "$exist" ]; then
             az storage account create --name $BACKEND_STORAGE_ACCOUNT_NAME \
               --resource-group $BACKEND_RESOURCE_GROUP_NAME \
@@ -131,9 +133,10 @@ jobs:
             az storage account show --name $BACKEND_STORAGE_ACCOUNT_NAME --resource-group $BACKEND_RESOURCE_GROUP_NAME
           fi
           
-          echo 'Blob container'
-          # Create blob container
+          
+          echo 'Create Blob container'
           $exist=$(az storage container exists --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME --account-key $BACKEND_KEY)
+          echo "Existe: $exist"
           if [ "$exist"="false" ]; then 
             az storage container create --name $BACKEND_CONTAINER_NAME --account-name $BACKEND_STORAGE_ACCOUNT_NAME
           else 
