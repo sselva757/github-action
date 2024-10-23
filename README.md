@@ -1,3 +1,9 @@
+Secrets:
+BACKEND_ORGANIZATION = Organization name of your HCP Terraform organization
+TF_API_TOKEN = API token to login inside my HCP Terraform workspace teams and lauch terraform init, apply...
+
+
+
 Requirements:
 az -upgrade
 
