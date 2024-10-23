@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # Inside my workspace, I'm going to use a Team Token for GitHub Actions.
-    # In my case, It uses owners team, however, you should create a new team with limitations.
+    # In my case, It uses owners team, however, you should create a new team with limitations. 
     steps:
     - name: Rotate Terraform API Token
       run: |
